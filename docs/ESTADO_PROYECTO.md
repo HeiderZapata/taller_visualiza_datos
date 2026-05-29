@@ -1,5 +1,5 @@
 # Estado del proyecto — Taller 2: Dashboard Analítico
-**Última actualización:** 2026-05-29 · **Actualizado por:** Claude Code (4.10 comparativa + cierre EDA; listo para Fase II)
+**Última actualización:** 2026-05-29 · **Actualizado por:** Claude Code (preguntas de negocio PN1–PN3 + estrategia Fase II D4; listo para Fase II)
 **Documentos hermanos:** `Contexto_Taller_Visualizacion_curado.md` (marco conceptual) · `Estrategia_y_prompts_Taller2.md` (plan y prompts)
 
 ---
@@ -23,6 +23,10 @@
 - **Entregable:** dashboard interactivo (Streamlit) que responda preguntas de negocio estratégicas, documentando la transición de Análisis Exploratorio → Composición del Mensaje (Aclaratorio + Storytelling).
 - **Rúbrica:** EDA 30% · Storytelling/Aclaratorio 35% · Dashboard 35%. **Criterio de maestría:** el gerente decide una acción en 30 segundos.
 - **Problema:** e-commerce multicategoría; conversión 1–3%; objetivo = identificar a quién/cuándo/cómo incentivar (propensión + uplift). Conecta con el proyecto integrador.
+- **Preguntas de negocio (explícitas, las que responde el dashboard):**
+  - **PN1 — ¿Dónde perdemos conversión y cuánto vale recuperarla?** → Palanca A (funnel 4.1, abandono 4.5, premio en $ 4.8a, marca 4.8c).
+  - **PN2 — ¿Quiénes son los clientes valiosos y cómo retenerlos?** → Palanca B (recurrencia 4.6, timing 4.8b).
+  - **PN3 — ¿Cuándo y con qué activar el incentivo?** → hora/intensidad (4.3), velocidad (4.7), precio-no-es-freno (4.2).
 - **Datos:** clickstream REES46 (oct 2019). El subset original `muestra_eventos_def.csv` quedó descartado como base (ver decisión D1). El crudo `2019-Oct.csv` (~5GB) está en Google Drive con `FILE_ID = 1kDasOXgXimvPn2Shu3wgZymbqj4_8pDc` (gdown). Volumen de referencia de la muestra actual (para dimensionar la nueva): ~499.212 eventos tras limpieza, 8.607 `purchase`, 10.851 `cart`, 8.340 usuarios compradores.
 - **Equipo:** Sara, Yeison, Heider, Kelly + tú.
 
@@ -30,8 +34,9 @@
 
 ## 2. Decisiones tomadas
 - **D1 — Muestreo:** se re-muestrea **por usuario** (cluster sampling) desde el crudo `2019-Oct.csv`, conservando todos los eventos de cada usuario. Motivo: la muestra original era aleatoria por evento y rompía sesiones/usuarios. Preservar usuarios completos sostiene los 7 hallazgos.
-- **D2 — Mensaje (FIJADO 2026-05-29):** **dos palancas en paralelo, ambas en electrónica**. (A) **Conversión del persuadible**: recuperar carritos de alta intención que no cierran (electronics, Apple/Samsung; $2,08 M en juego), con incentivo inmediato/en pantalla en la mañana. (B) **Retención del núcleo recurrente**: 31.7% de compradores que ya aportan 69% del revenue, con nudge de recompra 24–72 h en su misma categoría. Igual peso, dos públicos, dos acciones. Reemplaza al candidato único "usuario persuadible".
+- **D2 — Mensaje (FIJADO 2026-05-29; refinado para el test de 30 s):** **una historia, dos momentos de captura, ambos en electrónica** — *"el negocio deja dinero sobre la mesa en electrónica"*. (A) **Antes de comprar:** recuperar carritos abandonados (electronics, Apple/Samsung; $2,08 M en juego), con incentivo inmediato/en pantalla en la mañana. (B) **Después:** retener al núcleo recurrente (31.7% de compradores = 69% del revenue) con nudge de recompra 24–72 h en su misma categoría. Titular único arriba (los $ y la acción); las dos palancas como paneles/tabs. Reemplaza al candidato único "usuario persuadible".
 - **D3 — Herramienta del dashboard:** Streamlit/Python.
+- **D4 — Estrategia de Fase II / mensaje (FIJADO 2026-05-29):** la rúbrica pide UN gráfico héroe (exploratorio vs aclaratorio) y claridad en 30 s, así que se evita diluir con dos mensajes de igual peso: **un titular único, dos momentos**. **Gráfico héroe recomendado: la Palanca A monetizada** (revenue en juego / abandono de electronics, 4.8a) — es lo más visual, con número de dinero duro y una acción clarísima. Alternativas: slopegraph del funnel (4.1) o intensidad horaria (4.3). El entregable de Fase II es la **comparativa exploratorio→aclaratorio** del héroe + justificación de las decisiones visuales (Data-to-Ink, preatentivos, jerarquía, anotaciones, frase-acción en el título).
 
 ---
 
@@ -112,8 +117,9 @@ El notebook tiene un comentario que describía un muestreo estratificado ("100% 
 - [x] Producir tabla comparativa de los 7 hallazgos (original vs nuevo) — sección 4.10, ampliada con los 4 análisis de 4.8 (hecho 2026-05-29).
 
 **Abiertas (Fase II en adelante):**
-- [ ] **Fase II — Aclaratorio:** elegir el gráfico principal y mostrar su transición exploratorio→aclaratorio, aplicando los principios del curso (Data-to-Ink, preatentivos, jerarquía, Gestalt, acto de habla, patrón Contexto→Hallazgo→Traducción→Acción). Candidatos: funnel/slopegraph por categoría, "premio en $" (revenue abandonado), o intensidad horaria.
-- [ ] Fase III — Dashboard Streamlit (`app/app.py`): KPIs arriba, filtros en sidebar, prueba de 30 s; reflejar las dos palancas (conversión + retención).
+- [ ] **Quick-win Fase I (rúbrica):** añadir al inicio del notebook una celda markdown con la **pregunta de negocio explícita (PN1–PN3, §1)** y el **hallazgo central**; la rúbrica evalúa literalmente "Pregunta de Negocio" y "≥2 visualizaciones".
+- [ ] **Fase II — Aclaratorio:** producir la **comparativa exploratorio→aclaratorio** del gráfico héroe (recomendado: Palanca A monetizada / revenue en juego de electronics, 4.8a — ver D4) + justificación de decisiones visuales (Data-to-Ink, preatentivos, jerarquía, Gestalt, anotaciones, frase-acción en el título). **Primero decidir cuál gráfico cuenta mejor la tesis.**
+- [ ] Fase III — Dashboard Streamlit (`app/app.py`): titular/KPI arriba con la acción y el $, paneles por palanca (A/B) y por PN, filtros dinámicos (categoría, hora, marca, segmento), prueba de 30 s.
 - [ ] Pitch 3 min + coherencia del mensaje.
 
 ---
@@ -132,3 +138,4 @@ El notebook tiene un comentario que describía un muestreo estratificado ("100% 
 - **2026-05-29** — **Añadida sección 4.8 "¿Dónde está el dinero?" (4 análisis de oportunidad) y reescrita la síntesis (renumerada a 4.9).** Cuatro celdas nuevas insertadas antes de la síntesis (ids 80–88; notebook ahora 67 celdas): **(a) Premio en $** — $2,53 M en juego en carritos abandonados (≈mitad del revenue capturado), 82% en electronics ($2,08 M); recuperar 10% en electronics = $207.700; brecha one-time→recurrente $1.117/usuario. **(b) Timing de retención** — 2ª compra mediana 1.8 días, 75% en 1ª semana, 85.5% misma categoría → nudge 24–72 h. **(c) Marca en electronics** — Samsung+Apple = 70% de carritos; Apple ticket $732 concentra ~½ del revenue abandonado. **(d) Pareto** — 8% de productos = 80% del revenue; electronics = 78%, top-3 = 88%. **Síntesis 4.9 reescrita** integrando todo y corrigiendo cifras viejas (conv global 1.8%→2.44%, electronics 2.72%→3.92%, narrativa construction→electronics, apparel vespertino→mediodía). **Mensaje central D2 fijado: dos palancas en paralelo** (conversión del persuadible + retención del núcleo recurrente), ambas en electrónica. Todas las figuras nuevas en `outputs/figures/` (exploracion_08..11). Próximo: tabla comparativa de hallazgos y Fase II (aclaratorio) / Fase III (dashboard).
 - **2026-05-29** — **Tabla comparativa 4.10 (original vs corregido).** Añadida en la celda markdown vacía entre la síntesis 4.9 y el encabezado FASE II: tabla de los 7 hallazgos (valor por-evento vs por-usuario + por qué cambió) y lectura de cierre (3/4 robustos, 5/6/7 cambios sustanciales que validan D1). Nota operativa: **`nbstripout` reasigna los `id` de celda** (ahora secuenciales), así que para editar hay que localizar celdas por contenido, no por id viejo. Commit previo b03fc42.
 - **2026-05-29** — **Tabla 4.10 ampliada y EDA cerrado.** Añadido a 4.10 un segundo bloque con los 4 análisis de oportunidad de 4.8 (premio en $, timing, marca, Pareto) y su "para qué decisión". Tablero: Fases 2 (validar) y 3 (mensaje central) marcadas ✅; **Fase II (aclaratorio) queda como siguiente**. Con esto la Fase I / EDA está completa y commiteada. El notebook tiene 67 celdas (4.1–4.10 + síntesis); estructura de secciones estable. Próximo chat: arrancar Fase II (transición exploratorio→aclaratorio del gráfico principal).
+- **2026-05-29** — **Estrategia de Fase II persistida (alineación con la rúbrica).** Fijadas las **preguntas de negocio PN1–PN3** (§1) y el refinamiento de D2 a *"una historia, dos momentos"* para no diluir el test de 30 s. Nueva decisión **D4**: gráfico héroe de Fase II = Palanca A monetizada (revenue en juego/abandono de electronics, 4.8a); entregable = comparativa exploratorio→aclaratorio + justificación. Añadido quick-win de Fase I (celda con pregunta de negocio + hallazgo central, que la rúbrica evalúa). §6 actualizada con el orden: quick-win → Fase II → Fase III. Sin cambios en el notebook este paso.
