@@ -1,0 +1,21 @@
+# Dependencias del proyecto. Tras instalar, puedes congelar versiones exactas con:
+#   pip freeze > requirements.lock.txt
+# (para reproducibilidad estricta entre miembros del equipo)
+
+# Datos / muestreo
+duckdb>=1.0          # procesa el crudo de 5GB con streaming, sin cargarlo en RAM
+pandas>=2.0
+pyarrow>=14.0        # backend de Parquet
+gdown>=5.0           # descarga del crudo desde Google Drive (una sola vez)
+
+# Visualización
+matplotlib>=3.7
+seaborn>=0.13
+plotly>=5.18         # gráficas aclaratorias (Fase II)
+
+# Dashboard
+streamlit>=1.30
+
+# Notebook / higiene de git para el equipo
+jupyter
+nbstripout           # limpia outputs del notebook antes de commit (evita conflictos)

@@ -17,6 +17,9 @@ venv/
 .streamlit/secrets.toml
 .env
 
+# Logs de ejecución (reproducibles; no se versionan)
+outputs/*_log.txt
+
 # Sistema operativo / editor
 .DS_Store
 Thumbs.db
