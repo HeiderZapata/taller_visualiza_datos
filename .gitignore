@@ -28,3 +28,8 @@ notebooks/*.png
 .DS_Store
 Thumbs.db
 .vscode/
+
+# Excepción puntual: la muestra (28 MB) SÍ se versiona para desplegar el dashboard en
+# Streamlit Community Cloud (la nube clona el repo y necesita el dato). Es la única
+# salida derivada que versionamos; el resto sigue fuera de git.
+!data/processed/muestra_usuarios.parquet
