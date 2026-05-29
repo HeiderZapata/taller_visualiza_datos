@@ -1,5 +1,5 @@
 # Estado del proyecto — Taller 2: Dashboard Analítico
-**Última actualización:** 2026-05-29 · **Actualizado por:** Claude Code (4.8 análisis de oportunidad + 4.9 síntesis reescrita)
+**Última actualización:** 2026-05-29 · **Actualizado por:** Claude Code (4.10 comparativa + cierre EDA; listo para Fase II)
 **Documentos hermanos:** `Contexto_Taller_Visualizacion_curado.md` (marco conceptual) · `Estrategia_y_prompts_Taller2.md` (plan y prompts)
 
 ---
@@ -52,11 +52,11 @@
 | Fase | Descripción | Estado | Notas |
 |------|-------------|--------|-------|
 | 0 | Re-muestreo por usuario (Parquet) | ✅ Hecho | n_users=71.199 (semilla 42); 982.106 eventos, 16.925 purchase. Ver §7 |
-| 1 | Re-ejecutar EDA sobre nueva muestra | ✅ Hecho | Recalculadas todas las secciones (1–3 calidad, 4.1–4.7). Los 7 hallazgos rehechos sobre la muestra por usuario. Pendiente solo pulir la síntesis 4.8 completa y el mensaje central (→ Fase 2/3) |
+| 1 | Re-ejecutar EDA sobre nueva muestra | ✅ Hecho | Recalculadas todas las secciones (1–3 calidad, 4.1–4.7) + 4.8 análisis de oportunidad + 4.9 síntesis + 4.10 comparativa. Los 7 hallazgos rehechos sobre la muestra por usuario |
 | 1b | Reescribir funnel 4.1 (ver A1) | ✅ Hecho | Funnel por unidad (producto-en-sesión) en `src/funnel.py`; usado en 4.1. Ver §7 |
-| 2 | Validar/comparar los 7 hallazgos | ⬜ Pendiente | Tabla original vs nuevo |
-| 3 | Seleccionar mensaje central | ⬜ Pendiente | Tras validar |
-| 4 | Fase II — Aclaratorio (comparativa) | ⬜ Pendiente | |
+| 2 | Validar/comparar los 7 hallazgos | ✅ Hecho | Tabla comparativa 4.10 (original vs corregido) + 4 análisis de oportunidad. Ver §7 |
+| 3 | Seleccionar mensaje central | ✅ Hecho | D2 fijado: dos palancas en paralelo (conversión + retención), ambas en electrónica. Ver §2 |
+| 4 | Fase II — Aclaratorio (comparativa) | 🟡 Siguiente | Gráfico principal exploratorio→aclaratorio. Candidatos: funnel/slopegraph, premio en $, o intensidad horaria. Aplicar principios del curso |
 | 5 | Fase III — Dashboard Streamlit | ⬜ Pendiente | KPIs, filtros, 30 seg |
 | 6 | Pitch 3 min + coherencia | ⬜ Pendiente | |
 
@@ -109,7 +109,12 @@ El notebook tiene un comentario que describía un muestreo estratificado ("100% 
 - [x] Recalcular 4.7 velocidad por producto-en-sesión (mediana 2.2 min; negativos 27% → 0.1%) (hecho 2026-05-29).
 - [x] Añadir 4.8 análisis de oportunidad (premio en $, timing retención, marca, Pareto) (hecho 2026-05-29).
 - [x] Reescribir la síntesis (ahora 4.9) y fijar el mensaje central D2 (dos palancas) (hecho 2026-05-29).
-- [ ] Producir tabla comparativa de los 7 hallazgos (original vs nuevo).
+- [x] Producir tabla comparativa de los 7 hallazgos (original vs nuevo) — sección 4.10, ampliada con los 4 análisis de 4.8 (hecho 2026-05-29).
+
+**Abiertas (Fase II en adelante):**
+- [ ] **Fase II — Aclaratorio:** elegir el gráfico principal y mostrar su transición exploratorio→aclaratorio, aplicando los principios del curso (Data-to-Ink, preatentivos, jerarquía, Gestalt, acto de habla, patrón Contexto→Hallazgo→Traducción→Acción). Candidatos: funnel/slopegraph por categoría, "premio en $" (revenue abandonado), o intensidad horaria.
+- [ ] Fase III — Dashboard Streamlit (`app/app.py`): KPIs arriba, filtros en sidebar, prueba de 30 s; reflejar las dos palancas (conversión + retención).
+- [ ] Pitch 3 min + coherencia del mensaje.
 
 ---
 
@@ -125,3 +130,5 @@ El notebook tiene un comentario que describía un muestreo estratificado ("100% 
 - **2026-05-29** — **4.6 Recurrencia reescrita por ocasión (Hallazgo 6) — FLIP MAYOR.** Decisión metodológica: recurrencia = nº de **sesiones distintas con compra** (ocasiones), no eventos purchase (un carrito multi-ítem no es "recurrente"). Celdas 47+48 consolidadas (47 calcula `user_buys` una vez; 48 reutiliza), título con la definición. **Resultado que revierte el hallazgo viejo:** one-time **68.3%** (5.492) y **recurrentes 31.7%** (2.544 de 8.036) — el "97.1% one-time" era artefacto del muestreo por evento (compras sueltas → todos parecían únicos); confirma el valor de D1. El núcleo recurrente concentra el **69% del revenue**, ticket promedio **$1.411 vs $293** (~5×); cola larga hasta 44 ocasiones. **Implicación estratégica:** aparece una palanca de **retención** complementaria a la del persuadible → revisar el mensaje central (D2) en Fase 2/3. Caveat ventana solo-octubre (31.7% es piso). Sintetizada también la frase del Hallazgo 6 en 4.8. Pendiente: 4.7 velocidad.
 - **2026-05-29** — **4.7 Velocidad de decisión reescrita por producto-en-sesión (Hallazgo 7) — FASE 1 COMPLETA.** Decisión metodológica: medir el tiempo del primer `view` del producto **comprado** a su compra en la misma sesión (no first-view→first-purchase de la sesión, que cruzaba productos, A4). Celdas 50 (intro+nota), 51 (cálculo) y 52 (etiquetas) actualizadas; conteo de negativos ahora dinámico. **Resultados:** mediana **2.2 min** (antes 5.3), 77.8% <5min, 91.3% <10min, ~1.7% >30min. **Negativos: 0.1% (20/15.627) vs 27% antes** → confirma que eran daño del muestreo por evento, no del fenómeno; muestra válida 489→15.607 unidades (32×). El comprador con intención activa decide en minutos → incentivo inmediato/en pantalla; los canales diferidos quedan para abandono (H5) y recurrencia (H6). Corregida la frase del Hallazgo 7 en la síntesis 4.8. **Con esto los 7 hallazgos están recalculados sobre la muestra por usuario.** Próximo: revisión completa de la síntesis 4.8 + mensaje central (D2), y tabla comparativa original vs nuevo (Fase 2).
 - **2026-05-29** — **Añadida sección 4.8 "¿Dónde está el dinero?" (4 análisis de oportunidad) y reescrita la síntesis (renumerada a 4.9).** Cuatro celdas nuevas insertadas antes de la síntesis (ids 80–88; notebook ahora 67 celdas): **(a) Premio en $** — $2,53 M en juego en carritos abandonados (≈mitad del revenue capturado), 82% en electronics ($2,08 M); recuperar 10% en electronics = $207.700; brecha one-time→recurrente $1.117/usuario. **(b) Timing de retención** — 2ª compra mediana 1.8 días, 75% en 1ª semana, 85.5% misma categoría → nudge 24–72 h. **(c) Marca en electronics** — Samsung+Apple = 70% de carritos; Apple ticket $732 concentra ~½ del revenue abandonado. **(d) Pareto** — 8% de productos = 80% del revenue; electronics = 78%, top-3 = 88%. **Síntesis 4.9 reescrita** integrando todo y corrigiendo cifras viejas (conv global 1.8%→2.44%, electronics 2.72%→3.92%, narrativa construction→electronics, apparel vespertino→mediodía). **Mensaje central D2 fijado: dos palancas en paralelo** (conversión del persuadible + retención del núcleo recurrente), ambas en electrónica. Todas las figuras nuevas en `outputs/figures/` (exploracion_08..11). Próximo: tabla comparativa de hallazgos y Fase II (aclaratorio) / Fase III (dashboard).
+- **2026-05-29** — **Tabla comparativa 4.10 (original vs corregido).** Añadida en la celda markdown vacía entre la síntesis 4.9 y el encabezado FASE II: tabla de los 7 hallazgos (valor por-evento vs por-usuario + por qué cambió) y lectura de cierre (3/4 robustos, 5/6/7 cambios sustanciales que validan D1). Nota operativa: **`nbstripout` reasigna los `id` de celda** (ahora secuenciales), así que para editar hay que localizar celdas por contenido, no por id viejo. Commit previo b03fc42.
+- **2026-05-29** — **Tabla 4.10 ampliada y EDA cerrado.** Añadido a 4.10 un segundo bloque con los 4 análisis de oportunidad de 4.8 (premio en $, timing, marca, Pareto) y su "para qué decisión". Tablero: Fases 2 (validar) y 3 (mensaje central) marcadas ✅; **Fase II (aclaratorio) queda como siguiente**. Con esto la Fase I / EDA está completa y commiteada. El notebook tiene 67 celdas (4.1–4.10 + síntesis); estructura de secciones estable. Próximo chat: arrancar Fase II (transición exploratorio→aclaratorio del gráfico principal).
