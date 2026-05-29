@@ -16,12 +16,17 @@ from pathlib import Path
 
 import streamlit as st
 
-# Raíz del repo en sys.path (igual que sampling.py) para importar config y src/*
-sys.path.append(str(Path(__file__).resolve().parent.parent))
+# Rutas: raíz del repo (para config y src/*) y carpeta app/ (para módulos hermanos).
+# OJO: la carpeta se llama 'app' y el script también 'app.py' → para evitar el choque de
+# nombres importamos theme/charts como módulos hermanos (no 'from app import ...').
+_APP_DIR = Path(__file__).resolve().parent
+_ROOT = _APP_DIR.parent
+sys.path.append(str(_ROOT))
+sys.path.insert(0, str(_APP_DIR))
 import config  # noqa: E402
 from src import prep, metrics  # noqa: E402
-from app import charts  # noqa: E402
-from app.theme import fmt_money, fmt_money_short, fmt_pct, fmt_int  # noqa: E402
+import charts  # noqa: E402
+from theme import fmt_money, fmt_money_short, fmt_pct, fmt_int  # noqa: E402
 
 st.set_page_config(page_title="Taller 2 — Incentivos e-commerce", page_icon="💡", layout="wide")
 

@@ -12,9 +12,11 @@ from pathlib import Path
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-sys.path.append(str(Path(__file__).resolve().parent.parent))
-from app import theme  # noqa: E402
-from app.theme import GREY, CRIT, ACCENT, GREEN, MUTED, fmt_money, fmt_money_short, fmt_pct, fmt_int  # noqa: E402
+# Importa theme como módulo hermano (la carpeta 'app' y el script 'app.py' chocan de
+# nombre, así que no usamos 'from app import theme'); aseguramos app/ en el path.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import theme  # noqa: E402
+from theme import GREY, CRIT, ACCENT, GREEN, MUTED, fmt_money, fmt_money_short, fmt_pct, fmt_int  # noqa: E402
 
 
 # ── Héroe A (PN1): revenue en juego por categoría ─────────────────────────────
