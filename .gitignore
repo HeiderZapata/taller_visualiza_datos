@@ -20,6 +20,10 @@ venv/
 # Logs de ejecución (reproducibles; no se versionan)
 outputs/*_log.txt
 
+# Figuras generadas por el notebook (reproducibles; no se versionan durante el EDA)
+outputs/figures/
+notebooks/*.png
+
 # Sistema operativo / editor
 .DS_Store
 Thumbs.db
